@@ -1,0 +1,147 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Абстрактный базовый класс
+class Animal
+{
+protected:
+    string name;
+
+public:
+    Animal(string n)
+    {
+        name = n;
+    }
+
+    virtual void move() = 0;
+
+    virtual void makeSound()
+    {
+        cout << name << " издает неизвестный звук" << endl;
+    }
+
+    virtual ~Animal()
+    {
+        cout << "Уничтожен Animal: " << name << endl;
+    }
+};
+
+// Класс Cat
+class Cat : public Animal
+{
+public:
+    Cat(string n) : Animal(n) {}
+
+    void makeSound()
+    {
+        cout << name << " говорит мяу" << endl;
+    }
+
+    void move()
+    {
+        cout << name << " крадется бесшумно" << endl;
+    }
+
+    ~Cat()
+    {
+        cout << "Уничтожен Cat: " << name << endl;
+    }
+};
+
+// Класс Dog
+class Dog : public Animal
+{
+private:
+    string breed;
+
+public:
+    Dog(string n, string b) : Animal(n)
+    {
+        breed = b;
+    }
+
+    void makeSound()
+    {
+        cout << name << " (порода: " << breed
+             << ") говорит Гав-гав" << endl;
+    }
+
+    void move()
+    {
+        cout << name << " бегает за мячом" << endl;
+    }
+
+    ~Dog()
+    {
+        cout << "Уничтожен Dog: " << name << endl;
+    }
+};
+
+// Класс Bird
+class Bird : public Animal
+{
+private:
+    bool canFly;
+
+public:
+    Bird(string n, bool fly) : Animal(n)
+    {
+        canFly = fly;
+    }
+
+    void makeSound()
+    {
+        cout << name << " чирикает: Чик-чирик" << endl;
+    }
+
+    void move()
+    {
+        if (canFly)
+        {
+            cout << name << " парит в небе" << endl;
+        }
+        else
+        {
+            cout << name << " прыгает по земле" << endl;
+        }
+    }
+
+    ~Bird()
+    {
+        cout << "Уничтожен Bird: " << name << endl;
+    }
+};
+
+// Функция для демонстрации полиморфизма
+void animalShow(Animal* animal)
+{
+    animal->makeSound();
+    animal->move();
+    cout << endl;
+}
+
+int main()
+{
+    vector<Animal*> animals;
+
+    animals.push_back(new Cat("Мурка"));
+    animals.push_back(new Dog("Шарик", "Овчарка"));
+    animals.push_back(new Bird("Кеша", true));
+    animals.push_back(new Bird("Пингвин", false));
+
+    for (int i = 0; i < animals.size(); i++)
+    {
+        animalShow(animals[i]);
+    }
+
+    // Освобождение памяти
+    for (int i = 0; i < animals.size(); i++)
+    {
+        delete animals[i];
+    }
+
+    return 0;
+}
