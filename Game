@@ -1,0 +1,80 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+void playGame() {
+int playerMaxHealth = 30;
+int playerHealth = playerMaxHealth;
+int playerAttack = 7;
+
+int monsterHealth = 25;
+int monsterAttack = 5;
+
+cout << "\nТы воин, вставший на пути у злобного Гоблина. Бей первым!\n\n";
+
+while (playerHealth > 0 && monsterHealth > 0) {
+cout << "Твоё здоровье: " << playerHealth << endl;
+cout << "Здоровье монстра: " << monsterHealth << endl;
+
+cout << "Выбери действие:\n";
+cout << "1 — Атаковать\n";
+cout << "2 — Лечение\n";
+cout << ">>> ";
+
+int choice;
+cin >> choice;
+
+if (choice == 1) {
+monsterHealth -= playerAttack;
+cout << "\nТы ударил монстра и нанес " << playerAttack << " урона!\n";
+}
+else if (choice == 2) {
+int heal = rand() % 4 + 2; // от 2 до 5
+playerHealth += heal;
+if (playerHealth > playerMaxHealth)
+playerHealth = playerMaxHealth;
+
+cout << "\nТы выпил зелье и восстановил " << heal << " здоровья!\n";
+}
+else {
+cout << "\nНеверный ввод! Пропускаешь ход...\n";
+}
+
+// Проверка смерти монстра
+if (monsterHealth <= 0) {
+cout << "\nТы поверг монстра! Слава победителю!\n";
+break;
+}
+
+// Ход монстра
+playerHealth -= monsterAttack;
+cout << "Монстр атакует тебя и наносит " << monsterAttack << " урона!\n\n";
+
+// Проверка смерти игрока
+if (playerHealth <= 0) {
+cout << "Ты пал в бою... Игра окончена.\n";
+break;
+}
+}
+}
+
+int main() {
+srand(time(0)); // инициализация случайных чисел
+
+while (true) {
+playGame();
+
+cout << "\nХочешь сыграть еще? (да/нет): ";
+string answer;
+cin >> answer;
+
+if (answer != "да") {
+cout << "Спасибо за игру!\n";
+break;
+}
+}
+
+return 0;
+}
